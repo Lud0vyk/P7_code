@@ -18,8 +18,6 @@ if(!user) {
 export default createStore({
   // état
   state: {
-    // exemple
-    totalFromVueX: 0,
     status: '',
     user: {
       id: '',
@@ -48,10 +46,7 @@ export default createStore({
     error: 'error'
   },
   getters: {
-    // exemple
-    doubleDuTotal(state) {
-      return state.totalFromVueX * 2;
-    },
+    // pas sur que ce soit utile
     error() {
       alert ('error publication');
     },
@@ -92,9 +87,6 @@ export default createStore({
   },
   mutations: {
     // exemple
-    setTotalFromVueX(state, nouvelleValeur) {
-      state.totalFromVueX = nouvelleValeur;
-    },
     setStatus: function (state, status) {
       state.status = status;
     },
