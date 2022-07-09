@@ -5,7 +5,8 @@ const mongoose = require('mongoose');
 
 const publicationSchema = mongoose.Schema({
   userId: { type: String, required: true },
-  titre: { type: String, required: true },
+  userName: { type: String, required: true },
+  title: { type: String, required: true },
   validation: { type: Boolean, required: true },
   date: { type: Number, required: true },
   description: { type: String, required: true },

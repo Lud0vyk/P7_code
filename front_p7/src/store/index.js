@@ -13,6 +13,17 @@ if(!user) {
     role: '',
     token: ''
   }
+} else {
+  try {
+    user = JSON.parse(user);
+    instance.defaults.headers.common['Authorization'] = user.token;
+  } catch {
+    user = {
+      id: -1,
+      role: '',
+      token: ''
+    }
+  }
 }
 
 export default createStore({
@@ -30,13 +41,13 @@ export default createStore({
     },
     publicationSchema: [
       {userId: 0, titre: '0', validation: true, date: 20220630, description: '0', 
-        imageUrl: "../assets/images/blanche_640.jpg", likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]},
+        imageUrl: require("@/assets/images/blanche_640.jpg"), likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]},
       {userId: 1, titre: '1', validation: true, date: 20220701, description: '1',
-        imageUrl: "../assets/images/chili_640.jpg", likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]},
+        imageUrl: require("@/assets/images/chili_640.jpg"), likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]},
       {userId: 2, titre: '3', validation: false, date: 20220630, description: '3',
-        imageUrl: "../../blanche_640.jpg", likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]},
+        imageUrl: require("@/assets/images/blanche_640.jpg"), likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]},
       {userId: 3, titre: '4', validation: false, date: 20220701, description:'4',
-        imageUrl: "../src/assets/images/chili_640.jpg", likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]}
+        imageUrl: require("@/assets/images/chili_640.jpg"), likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]}
     ],
     showPublication: document.getElementById('items'),
     liens: document.createElement('a'),
@@ -51,7 +62,7 @@ export default createStore({
       alert ('error publication');
     },
     getPublication() {
-      return fetch('http://localhost:3000/api/publications/')
+      return fetch('http://localhost:3000/api/publication/')
       .then( function(reponse) { return reponse.json()})
       .then( function(publications) { return publications})
       .catch( alert('error publication'))
@@ -92,8 +103,19 @@ export default createStore({
     },
     logUser: function (state, user) {
       instance.defaults.headers.common['Authorization'] = user.token;
-      // localStorage.setItem('user', user); pas de déconnexion donc pas utile pour le moment
+      localStorage.setItem('user', JSON.stringify(user));
       state.user = user;
+    },
+    userInfos: function (state, userInfos) {
+      state.userInfos = userInfos;
+    },
+    logout: function (state) {
+      state.user = {
+        id: '',
+        role: '',
+        token: ''
+      }
+      localStorage.removeItem('user');
     }
   },
   actions: {
@@ -152,11 +174,13 @@ Il peut également prendre un objet avec les fonctions get et set pour créer un
 mutations :
 Vue est capable de détecter quand les méthodes de mutation d'un tableau réactif sont appelées et de déclencher les mises à jour nécessaires.
 méthodes :      push()    pop()    shift()    unshift()    splice()    sort()    reverse()
-
+** pour appeler une mutation : this.$store.commit('leNomDeLaMutation'); **
 
 actions :
 Les actions sont similaires aux mutations, les différences étant que :
     Au lieu de faire muter l'état, les actions commettent des mutations.
     Les actions peuvent contenir des opérations asynchrones arbitraires.
+** pour ce qui est asynchrone les actions sont plus adaptées **
+** pour appeler une action : this.$store.dispatch('leNomDeLAction'); **
 
 */

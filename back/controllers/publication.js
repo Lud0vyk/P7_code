@@ -4,12 +4,13 @@ const Publication = require('../models/publication');
 const fs = require('fs');
 const user = require('../models/user');
 
-// crétion d'une nouvelle publication
+// création d'une nouvelle publication
 exports.createPublication = (req, res, next) => {
   const publicationObject = JSON.parse(req.body.publication);
   delete publicationObject._id;
   const publication = new Publication({
     ...publicationObject,
+    //userName: `${req.body.user.name}`,//pas sur
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
     validation: false,
     date: Date.now(),

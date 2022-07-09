@@ -19,6 +19,9 @@
         </div>
     </div>
 
+    <hr>
+    <button @click="consoleLog()" class="button"> console.log </button>
+
 </template>
 
 <script>
@@ -27,7 +30,7 @@ import { mapState } from 'vuex';
 
 export default {
 
-    name: 'identifiantsLogin',
+    name: 'Login_vue',
     data() {
         return {
             mode: 'login',
@@ -61,6 +64,8 @@ export default {
             });
         },
         consoleLog() {
+            //console.log();
+            console.log("login.vue");
             console.log(this.email, this.password);
         }
     }
@@ -75,10 +80,6 @@ export default {
     flex-wrap: wrap;
     justify-content: center;
     margin: 15px;
-}
-.button--connection {
-    width: 12%;
-    height: 30px;
 }
 
 </style>

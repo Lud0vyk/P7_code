@@ -20,6 +20,9 @@
 
     </div>
 
+    <hr>
+    <button @click="consoleLog()" class="button"> console.log </button>
+
 </template>
 
 
@@ -29,7 +32,7 @@ import { mapState } from 'vuex';
 
 export default {
 
-    name: 'identifiantsSign_up',
+    name: 'Sign_up_vue',
     data() {
         return {
             mode: 'signup',
@@ -57,7 +60,7 @@ export default {
                 name: this.name
             })
             .then(function (response) {
-                self.login();
+                self.signup();
                 console.log(response);
             })
             .catch(function (error) {
@@ -65,7 +68,9 @@ export default {
             });
         },
         consoleLog() {
-            console.log(this.email, this.password, this.name);
+            //console.log();
+            console.log("sign_up.vue");
+            console.log(this.email, this.password);
         }
     }
 }
@@ -79,10 +84,6 @@ export default {
     flex-wrap: wrap;
     justify-content: center;
     margin: 15px;
-}
-.button--connection {
-    width: 12%;
-    height: 30px;
 }
 
 </style>

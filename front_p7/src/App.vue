@@ -2,7 +2,6 @@
   <nav>
     <router-link to="/">Home</router-link>
     <!--<router-link v-if=logged=true to="/add">Add Publication</router-link> |-->
-    <router-link to="/about">About</router-link>
     <router-link to="/add">Add</router-link>
     <router-link to="/sign_up">Sign up</router-link>
     <router-link to="/login">Login</router-link>
@@ -53,4 +52,27 @@ img {
   min-width: 200px;
   align-items: center;
 }
+
+.form-row {
+    display: wrap;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 15px;
+}
+
+.button {
+  border-radius: 10px;
+  min-height: 4em;
+  min-width: 90px;
+  padding: 0.7em 3em 0.7em 3em  ;
+  font-weight: bold;
+  font-size: 0.9em;
+  background-color: green;
+
+
+  &--disable {
+    background-color: red;
+  }
+}
+
 </style>
