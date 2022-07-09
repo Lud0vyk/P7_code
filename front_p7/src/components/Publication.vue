@@ -1,9 +1,15 @@
 <template>
     <div class="card">
-        
+        <h2> {{ titre }}</h2>
+
+        <img src=""/>
+
+        <p> {{ description }}</p>
+    <hr>
+    
         <div class="row">
             <h2>Ma publication</h2>
-            <p> identifiant : {{ id}}</p>
+            <p> identifiant : {{ id }} </p>
              
         </div>
     </div>

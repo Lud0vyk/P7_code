@@ -14,8 +14,10 @@
         <div class="form-row">
             <button class="button button--connection"
                 @click="signup()"
-                :class="{'button--disable' : !validatedFields }"
-            > Sign up </button>
+                :class="{'button--disable' : !validatedFields }">
+                <span v-if="status == 'loading'">Connection...</span>
+                <span v-else> Sign up </span>
+            </button>
         </div>
 
     </div>
@@ -43,13 +45,13 @@ export default {
     },
     computed: {
         validatedFields() {
-            if(this.email != "" && this.password != "" && this.name != "") {
-                return true;
-            } else {
+            if(this.email == "" || this.password == "" || this.name == "") {
                 return false;
+            } else {
+                return true;
             }
         },
-        ...mapState([status])
+        ...mapState(['status'])
     },
     methods: {
         signup() {
@@ -60,7 +62,8 @@ export default {
                 name: this.name
             })
             .then(function (response) {
-                self.signup();
+                //self.$router.push('home');
+                self.$store.commit('login');
                 console.log(response);
             })
             .catch(function (error) {
@@ -70,7 +73,8 @@ export default {
         consoleLog() {
             //console.log();
             console.log("sign_up.vue");
-            console.log(this.email, this.password);
+            console.log(this.email, this.password, this.name);
+            console.log(localStorage.userInfos);
         }
     }
 }

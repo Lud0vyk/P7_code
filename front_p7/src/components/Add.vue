@@ -2,17 +2,6 @@
     <div class="card">
         <h1>Add publication</h1>
 
-        <div class="form-row">
-            <p> title : </p>
-            <input v-model="title1" class="form-row_input" type="text" />
-        </div>
-        <div class="form-row">
-            <p> Description : </p>
-            <input v-model="description1" class="form-row_input" type="textarea" />
-        </div>
-           
-        <hr>
-
         <form method="get" id="form_add">
             <div class="form-row">
                 <label for="title">Title : </label>
@@ -22,19 +11,28 @@
                 <label for="description">Description : </label>
                 <textarea v-model="description" id="description" class="form-row_input" rows="5" cols="50" type="textarea" required></textarea>
             </div>
-                <div class="form-row">
-                <button class="button button--addImg"
+            <div class="form-row">
+               <!-- <button class="button button--addImg"
+                    type="file"
                     @click="addImg()"
                     :class="addImg"
-                > Add image </button>
+                > Add image </button>-->
+
+                <input type="file"  @change="onFileSelected">
+                <button class="button button--connection"
+                    @click="onUpload"
+                    :class="{'button--disable' : !validatedFields }">
+                    Submit 
+                </button>
+                
             </div>
 
-            <div class="form-row">
+            <!-- <div class="form-row">
                 <button class="button button--connection"
                     @click="Submit()"
                     :class="{'button--disable' : !validatedFields }"
                 > Submit </button>
-            </div>
+            </div>-->
 		</form>
   
     </div>
@@ -47,6 +45,7 @@
 
 <script>
 
+import axios from 'axios';
 import { mapState } from 'vuex';
 
 export default {
@@ -55,22 +54,38 @@ export default {
         return {
            //publication: this.$store.state.publicationSchema,
            mode: 'add',
-           user: this.$store.state.user,
+           //user: this.$store.state.user,
            userInfos: this.$store.state.userInfos,
            title: '',
            description: '',
            addImg: '',
+           selectedFile: null,
+           publication: []
         }
   },
   methods: {
+    onFileSelected(event) {
+        this.selectedFile = event.target.files[0];
+    },
+    onUpload() {
+        const publication = new FormData();
+        publication.append('image', this.selectedFile, this.selectedFile.name);
+        publication.titre = this.titre;
+        publication.titre = this.description,
+        publication.userId = this.userInfos.id,
+        publication.userName = this.userInfos.name;
+        axios.post('http://localhost:3000/api/', publication)
+        .then(res => {
+            console.log(res)
+        }) .catch(function (error) {
+            console.log(error);
+        });
+    },
     consoleLog() {
       //console.log(this.publication.imageUrl);
-      console.log("meth");
-      console.log(this.user);
-    },
-    logout() {
-      this.$store.commit('logout');
-      this.$router.push('/');
+      console.log("add.vue");
+      console.log(localStorage.userInfos);
+      
     },
     addPublication() {
         const self = this;
@@ -85,13 +100,13 @@ export default {
             dislikes: 0
         })
         .then(function (response) {
-            self.function(); // a faire
+            self.$router.push('home');
             console.log(response);
         })
         .catch(function (error) {
             console.log(error);
         });
-    },
+    }
   },
   computed: {
         validatedFields() {
@@ -109,7 +124,7 @@ export default {
                 return false;
             }
         },*/
-        ...mapState([status])
+        ...mapState(['status'])
   }
 }
 
@@ -135,10 +150,12 @@ export default {
 
         label {
             //justify-content: left;
-        
+            margin-right: 5px;
+            // pour mettre quelque chose à virer plus tard
         }
         input, textarea {
-            
+            margin-right: 5px;
+            // pour mettre quelque chose à virer plus tard
         }
         button {
             min-width: 100px;

@@ -15,6 +15,5 @@ export default {
     components: {
     publicationS
   }
-
 }
 </script>

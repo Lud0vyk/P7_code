@@ -10,7 +10,8 @@ exports.createPublication = (req, res, next) => {
   delete publicationObject._id;
   const publication = new Publication({
     ...publicationObject,
-    //userName: `${req.body.user.name}`,//pas sur
+    userName: req.body.userName,
+    userId: req.body.userId,
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
     validation: false,
     date: Date.now(),

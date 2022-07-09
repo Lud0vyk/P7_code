@@ -5,9 +5,6 @@
 
     <h2>Publications</h2>
 
-    <!--<imput v-model="searchKey" type="search" id="search" placeholder="Rechercher..." autocomplete="off"></imput>
-    pas utile -->
-
     <div class="cart-card-container">
       <div class="card-container">
         <!--<div v-for="publication in publications" :key="publication.userId" class="card">-->
@@ -24,11 +21,11 @@
     <hr>
     <button @click="consoleLog()" class="button"> console.log </button>
 
-  <section class="items" id="items">
-    <span v-if="publications.length < 1"> Il n'y aucune publication </span>
-  <!-- router-link :to="{name: 'publication', params: {name: 'id'}}></router-link> ex à supprimer -->
-  <!-- <a @click="showPublication('publication.id');"></a> ex à incorporer -->
-  </section>
+    <section class="items" id="items">
+      <span v-if="publications.length < 1"> Il n'y aucune publication </span>
+    <!-- router-link :to="{name: 'publication', params: {name: 'id'}}></router-link> ex à supprimer -->
+    <!-- <a @click="showPublication('publication.id');"></a> ex à incorporer -->
+    </section>
 
   </div>
 </template>
@@ -103,12 +100,10 @@ a {
 }
 
 .card {
+  //display: grid;
   /*display: flex;
   flex-direction:row;
   flex-wrap:wrap;*/
-}
-.card {
-  //display: grid;
 
   img {
     width: 15%;

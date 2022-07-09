@@ -3,8 +3,6 @@
     <img alt="logo groupomania" src="../assets/icon-left-font.png">
     <HomePage/>
   </div>
-
-
 </template>
 
 
@@ -18,7 +16,6 @@ export default {
     components: {
     HomePage
   }
-
 }
 
 </script>

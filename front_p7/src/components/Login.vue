@@ -14,8 +14,10 @@
         <div class="form-row">
             <button class="button button--connection"
                 @click="login()"
-                :class="{'button--disable' : !validatedFields }"
-            > Login </button>
+                :class="{'button--disable' : !validatedFields }">
+                <span v-if="status == 'loading'">Connection...</span>
+                <span v-else> Login </span>
+            </button>
         </div>
     </div>
 
@@ -46,7 +48,7 @@ export default {
                 return false;
             }
         },
-        ...mapState([status])
+        ...mapState(['status'])
     },
     methods: {
         login() {
@@ -67,6 +69,7 @@ export default {
             //console.log();
             console.log("login.vue");
             console.log(this.email, this.password);
+            console.log(localStorage.userInfos);
         }
     }
 }

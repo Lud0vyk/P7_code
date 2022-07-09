@@ -6,19 +6,23 @@ const instance = axios.create({
 });
 
 // récupération de l'utilisateur dans le localStorage si il s'est connecté
-let user = localStorage.getItem('user');
-if(!user) {
-  user = {
+let userInfos = localStorage.getItem('userInfos');
+if(!userInfos) {
+  userInfos = {
+    nom: '',
+    email: '',
     id: -1,
     role: '',
     token: ''
   }
 } else {
   try {
-    user = JSON.parse(user);
-    instance.defaults.headers.common['Authorization'] = user.token;
+    userInfos = JSON.parse(userInfos);
+    instance.defaults.headers.common['Authorization'] = userInfos.token;
   } catch {
-    user = {
+    userInfos = {
+      nom: '',
+      email: '',
       id: -1,
       role: '',
       token: ''
@@ -30,14 +34,12 @@ export default createStore({
   // état
   state: {
     status: '',
-    user: {
+    userInfos: {
+      nom: '',
+      email: '',
       id: '',
       role: '',
       token: ''
-    },
-    userInfos: {
-      nom: '',
-      email: ''
     },
     publicationSchema: [
       {userId: 0, titre: '0', validation: true, date: 20220630, description: '0', 
@@ -54,7 +56,8 @@ export default createStore({
     article: document.createElement('article'),
     images: document.createElement("img"),
     publicationTitre: document.createElement("h3"),
-    error: 'error'
+    error: 'error',
+    publication: []
   },
   getters: {
     // pas sur que ce soit utile
@@ -101,29 +104,30 @@ export default createStore({
     setStatus: function (state, status) {
       state.status = status;
     },
-    logUser: function (state, user) {
-      instance.defaults.headers.common['Authorization'] = user.token;
-      localStorage.setItem('user', JSON.stringify(user));
-      state.user = user;
+    logUser: function (state, userInfos) {
+      instance.defaults.headers.common['Authorization'] = userInfos.token;
+      localStorage.setItem('userInfos', JSON.stringify(userInfos));
+      state.userInfos = userInfos;
     },
     userInfos: function (state, userInfos) {
       state.userInfos = userInfos;
     },
     logout: function (state) {
-      state.user = {
+      state.userInfos = {
+        name: '',
+        email: '',
         id: '',
         role: '',
         token: ''
       }
-      localStorage.removeItem('user');
+      localStorage.removeItem('userInfos');
     }
   },
   actions: {
     // création du compte utilisteur
     signup: ({commit}, userInfos) => {
-      console.log(userInfos);
+      commit('setStatus', 'loading');
       return new Promise((resolve, reject) => {
-        commit;
         instance.post('auth/signup', userInfos)
         .then(function (response) {
           commit('setStatus', 'created');
@@ -161,6 +165,15 @@ export default createStore({
         commit('setStatus', 'error_create');
       });
     }*/
+    /*async fetch(state) {
+      state.publication = await 
+    },*/
+    async getPublication() {
+      return await fetch('http://localhost:3000/api/publication/')
+      .then( function(reponse) { return reponse.json()})
+      .then( function(publications) { return publications})
+      .catch( alert('error publication'))
+    }
   },
   modules: {
   }
