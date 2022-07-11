@@ -14,7 +14,7 @@ exports.createPublication = (req, res, next) => {
     userId: req.body.userId,
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
     validation: false,
-    date: Date.now(),
+    date: req.body.date,
     likes: 0,
     dislikes: 0,
   });

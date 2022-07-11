@@ -31,6 +31,7 @@
 <script>
 
 import { mapState } from 'vuex';
+//import router from 'vue-router';
 
 export default {
 
@@ -62,8 +63,7 @@ export default {
                 name: this.name
             })
             .then(function (response) {
-                //self.$router.push('home');
-                self.$store.commit('login');
+                self.$router.push('/login');
                 console.log(response);
             })
             .catch(function (error) {
@@ -74,7 +74,8 @@ export default {
             //console.log();
             console.log("sign_up.vue");
             console.log(this.email, this.password, this.name);
-            console.log(localStorage.userInfos);
+            console.log(this.$router.push('/login'));
+            this.$router.push('/login');
         }
     }
 }

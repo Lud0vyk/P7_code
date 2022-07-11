@@ -19,6 +19,7 @@ if(!userInfos) {
   try {
     userInfos = JSON.parse(userInfos);
     instance.defaults.headers.common['Authorization'] = userInfos.token;
+    //userInfos.token = 'RANDOM_TOKEN_SECRET';
   } catch {
     userInfos = {
       nom: '',
@@ -42,14 +43,16 @@ export default createStore({
       token: ''
     },
     publicationSchema: [
-      {userId: 0, titre: '0', validation: true, date: 20220630, description: '0', 
+      {id: 0, userId: 0, titre: '0', validation: true, date: 20220630, description: '0', 
         imageUrl: require("@/assets/images/blanche_640.jpg"), likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]},
-      {userId: 1, titre: '1', validation: true, date: 20220701, description: '1',
+      {id: 1, userId: 1, titre: '1', validation: true, date: 20220701, description: '1',
         imageUrl: require("@/assets/images/chili_640.jpg"), likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]},
-      {userId: 2, titre: '3', validation: false, date: 20220630, description: '3',
-        imageUrl: require("@/assets/images/blanche_640.jpg"), likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]},
-      {userId: 3, titre: '4', validation: false, date: 20220701, description:'4',
-        imageUrl: require("@/assets/images/chili_640.jpg"), likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]}
+      {id: 2, userId: 2, titre: '3', validation: false, date: 20220702, description: '3',
+        imageUrl: require("@/assets/images/pesto_640.jpg"), likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]},
+      {id: 3, userId: 3, titre: '4', validation: false, date: 20220703, description:'4',
+        imageUrl: require("@/assets/images/salad_640.jpg"), likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]},
+      {id: 4, userId: 3, titre: '55', validation: false, date: 20220603, description:'55',
+        imageUrl: require("@/assets/images/soja_640.jpg"), likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]}
     ],
     showPublication: document.getElementById('items'),
     liens: document.createElement('a'),
@@ -57,7 +60,8 @@ export default createStore({
     images: document.createElement("img"),
     publicationTitre: document.createElement("h3"),
     error: 'error',
-    publication: []
+    publication: [],
+    currentPublication: [],
   },
   getters: {
     // pas sur que ce soit utile
@@ -121,7 +125,7 @@ export default createStore({
         token: ''
       }
       localStorage.removeItem('userInfos');
-    }
+    },
   },
   actions: {
     // création du compte utilisteur
@@ -173,6 +177,16 @@ export default createStore({
       .then( function(reponse) { return reponse.json()})
       .then( function(publications) { return publications})
       .catch( alert('error publication'))
+    },
+    setCurrentPublication ({commit, state}, publicationId) {
+      let publicationFound = {};
+      // A CHANGER
+      state.publicationSchema.forEach((publication) => {
+        if(publicationId == publication.id) {
+          publicationFound = publication;
+        }
+      });
+      commit('setCurrentPublication', publicationFound);
     }
   },
   modules: {

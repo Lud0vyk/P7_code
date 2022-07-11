@@ -8,14 +8,14 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
-    /*
-    children: [
+    component: HomeView,
+    /*children: [
       {
         // lors d'un clic sur une publication
-        path: 'publi/:id',
-        component: publi,
-        props: true
+        path: '/publication/:id',
+        name: 'publication',
+        props: true,
+        component: () => import(/* webpackChunkName: "publication" *//* '../views/PublicationView.vue')
       }
     ]*/
   },
@@ -32,9 +32,10 @@ const routes = [
     component: () => import(/* webpackChunkName: "login" */ '../views/LoginView.vue')
   },
   {
-    path: '/publi/:id',
-    name: 'publi',
-    //component: PublicationView
+    // lors d'un clic sur une publication
+    path: '/publication/:id',
+    name: 'publication',
+    props: true,
     component: () => import(/* webpackChunkName: "publication" */ '../views/PublicationView.vue')
   },
   {
@@ -42,6 +43,10 @@ const routes = [
     name: 'add',
     //component: AddView
     component: () => import(/* webpackChunkName: "add" */ '../views/AddView.vue')
+  },
+  {
+    path: '/publication/:pathMatch(.*)',
+    redirect: 'publication'
   },
   {
     // si le chemin n'est pas correct redirection vers l'accueil 

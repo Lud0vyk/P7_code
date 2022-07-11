@@ -18,7 +18,7 @@
                     :class="addImg"
                 > Add image </button>-->
 
-                <input type="file"  @change="onFileSelected">
+                <input type="file" @change="onFileSelected" >
                 <button class="button button--connection"
                     @click="onUpload"
                     :class="{'button--disable' : !validatedFields }">
@@ -27,7 +27,7 @@
                 
             </div>
 
-            <!-- <div class="form-row">
+            <!-- v-model="selectedFile" div class="form-row">
                 <button class="button button--connection"
                     @click="Submit()"
                     :class="{'button--disable' : !validatedFields }"
@@ -54,30 +54,58 @@ export default {
         return {
            //publication: this.$store.state.publicationSchema,
            mode: 'add',
-           //user: this.$store.state.user,
            userInfos: this.$store.state.userInfos,
            title: '',
            description: '',
            addImg: '',
            selectedFile: null,
-           publication: []
+           publication: {
+            /*userId,
+            userName,
+            title,
+            validation,
+            description,
+            imageUrl,
+            likes,
+            dislike*/
+           }
         }
   },
   methods: {
     onFileSelected(event) {
+        console.log(event);
         this.selectedFile = event.target.files[0];
+        console.log(this.selectedFile);
     },
     onUpload() {
-        const publication = new FormData();
-        publication.append('image', this.selectedFile, this.selectedFile.name);
-        publication.titre = this.titre;
-        publication.titre = this.description,
-        publication.userId = this.userInfos.id,
-        publication.userName = this.userInfos.name;
-        axios.post('http://localhost:3000/api/', publication)
+        const fd = new FormData();
+        
+        fd.append('image', this.selectedFile, this.selectedFile.name);
+
+        /*this.publication =  new publication {
+            this.userId = this.userInfos.id,
+            this.userName = this.userInfos.name,
+            this.title = this.title,
+            this.description = this.description,
+            this.imageUrl = fd,
+            this.likes = 0,
+            this.dislikes = 0
+        };*/
+
+        axios.post('http://localhost:3000/api/publication', this.userInfos.id, {
+            userId : this.userInfos.id,
+            userName : this.userInfos.name,
+            title : this.title,
+            description : this.description,
+            imageUrl : this.selectedFile.name,
+            date: Date.now(),
+            likes : 0,
+            dislikes : 0,
+            file: fd
+        })
         .then(res => {
             console.log(res)
-        }) .catch(function (error) {
+        }).catch(function (error) {
             console.log(error);
         });
     },
@@ -85,6 +113,8 @@ export default {
       //console.log(this.publication.imageUrl);
       console.log("add.vue");
       console.log(localStorage.userInfos);
+      console.log("selectedFile");
+      console.log(this.selectedFile);
       
     },
     addPublication() {

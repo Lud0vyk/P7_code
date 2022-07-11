@@ -40,9 +40,13 @@ nav {
     font-weight: bold;
     color: #2c3e50;
     margin-right: 5%;
+    text-decoration: none;
 
     &.router-link-exact-active {
       color: #FD2D01;
+    }
+    &:hover {
+      color: #FFD7D7;
     }
   }
 }

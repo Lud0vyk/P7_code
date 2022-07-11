@@ -11,12 +11,14 @@ exports.signup = (req, res, next) => {
   console.log(req.body);
     bcrypt.hash(req.body.password, 10)
       .then(hash => {
+        console.log(hash);
         const user = new User({
           email: req.body.email,
           password: hash,
           name: req.body.name,
           role: 'user'
         });
+        console.log(user);
         user.save()
           .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
           .catch(error => res.status(400).json({ error }));

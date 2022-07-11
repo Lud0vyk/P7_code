@@ -1,16 +1,13 @@
 <template>
     <div class="card">
-        <h2> {{ titre }}</h2>
+        <h2> {{ UserPublication.titre }}</h2>
 
-        <img src=""/>
+        <img :src="UserPublication.imageUrl" :alt="UserPublication.description"/>
 
-        <p> {{ description }}</p>
-    <hr>
+        <p> {{ UserPublication.description }}</p>
     
         <div class="row">
-            <h2>Ma publication</h2>
-            <p> identifiant : {{ id }} </p>
-             
+            <p> by : {{ userInfos.name }} </p>
         </div>
     </div>
 
@@ -41,17 +38,48 @@
 <script>
 export default {
 
-    name: 'publicationS',
-
+    name: 'publicationVue',
     props: ['id'],
+    data() {
+        return {
+           publications: this.$store.state.publicationSchema,
+           userInfos: this.$store.state.userInfos,
+           UserPublication: []
+        }
+    },
+    components : {
 
+    },
+    created () {
+        // action
+        this.$store.dispatch('setCurrentPublication', this.id);
+    },
     methods : {
+        URL: function url() {
+            // récupération de l'id du produit
+            let queryString_url_id = window.location.search;
+            let urlSearchParams = new URLSearchParams(queryString_url_id);
+            let id = urlSearchParams.get("id");
 
+            for(let publication in this.publications) {
+
+                if(id === publication.id) {
+                    this.UserPublication = publication;
+                    return this.UserPublication;
+                } else {
+                    console.log('error publication');
+                }
+                console.log(this.UserPublication);
+            }
+        },
         consoleLog() {
             //console.log();
-            console.log("login.vue");
+            console.log("pub.vue");
             console.log(this.email, this.password);
         }
+    },
+    computed: {
+        
     }
 
 
