@@ -22,9 +22,6 @@
 
     </div>
 
-    <hr>
-    <button @click="consoleLog()" class="button"> console.log </button>
-
 </template>
 
 
@@ -69,13 +66,6 @@ export default {
             .catch(function (error) {
                 console.log(error);
             });
-        },
-        consoleLog() {
-            //console.log();
-            console.log("sign_up.vue");
-            console.log(this.email, this.password, this.name);
-            console.log(this.$router.push('/login'));
-            this.$router.push('/login');
         }
     }
 }

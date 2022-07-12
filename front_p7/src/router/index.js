@@ -1,8 +1,6 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-//import Sign_upView from '../views/Sign_upView.vue'
-//import LoginView from '../views/LoginView.vue'
-//import Publication from '../views/PublicationView.vue'
+import { createRouter, createWebHashHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import Publication from '../views/PublicationView.vue';
 
 const routes = [
   {
@@ -36,7 +34,8 @@ const routes = [
     path: '/publication/:id',
     name: 'publication',
     props: true,
-    component: () => import(/* webpackChunkName: "publication" */ '../views/PublicationView.vue')
+    component: Publication,
+    //component: () => import(/* webpackChunkName: "publication" */ '../views/PublicationView.vue')
   },
   {
     path: '/add',

@@ -6,7 +6,7 @@ const instance = axios.create({
 });
 
 // récupération de l'utilisateur dans le localStorage si il s'est connecté
-let userInfos = localStorage.getItem('userInfos');
+let userInfos = sessionStorage.getItem('userInfos');
 if(!userInfos) {
   userInfos = {
     nom: '',
@@ -19,7 +19,6 @@ if(!userInfos) {
   try {
     userInfos = JSON.parse(userInfos);
     instance.defaults.headers.common['Authorization'] = userInfos.token;
-    //userInfos.token = 'RANDOM_TOKEN_SECRET';
   } catch {
     userInfos = {
       nom: '',
@@ -35,82 +34,27 @@ export default createStore({
   // état
   state: {
     status: '',
-    userInfos: {
-      nom: '',
-      email: '',
-      id: '',
-      role: '',
-      token: ''
+    userInfos: userInfos,
+    currentPublication: {
+      userName: "",
+      userId: "",
+      titre: "",
+      description: "",
+      date: "",
+      validation: "",
+      image: ""
     },
-    publicationSchema: [
-      {id: 0, userId: 0, titre: '0', validation: true, date: 20220630, description: '0', 
-        imageUrl: require("@/assets/images/blanche_640.jpg"), likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]},
-      {id: 1, userId: 1, titre: '1', validation: true, date: 20220701, description: '1',
-        imageUrl: require("@/assets/images/chili_640.jpg"), likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]},
-      {id: 2, userId: 2, titre: '3', validation: false, date: 20220702, description: '3',
-        imageUrl: require("@/assets/images/pesto_640.jpg"), likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]},
-      {id: 3, userId: 3, titre: '4', validation: false, date: 20220703, description:'4',
-        imageUrl: require("@/assets/images/salad_640.jpg"), likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]},
-      {id: 4, userId: 3, titre: '55', validation: false, date: 20220603, description:'55',
-        imageUrl: require("@/assets/images/soja_640.jpg"), likes: 0, dislikes: 0, usersLikes: [0], usersDislikes: [0]}
-    ],
-    showPublication: document.getElementById('items'),
-    liens: document.createElement('a'),
-    article: document.createElement('article'),
-    images: document.createElement("img"),
-    publicationTitre: document.createElement("h3"),
-    error: 'error',
-    publication: [],
-    currentPublication: [],
   },
   getters: {
-    // pas sur que ce soit utile
-    error() {
-      alert ('error publication');
-    },
-    getPublication() {
-      return fetch('http://localhost:3000/api/publication/')
-      .then( function(reponse) { return reponse.json()})
-      .then( function(publications) { return publications})
-      .catch( alert('error publication'))
-    },
-    /*getPublication() {
-      fetch('http://localhost:3000/api/publication/')
-      .then((reponse) => reponse.json())
-      .then((publications) => this.publications)
-      .catch((error) => alert ('error publication'))
-    },*/
-    functionShowPublication (state, publication) {
-      return state.liens,
-        state.liens.href = `./publication.html?id=${publication._id}`,
-        state.showPublication.appendChild(state.liens),
-
-        state.article = document.createElement('article'),
-        state.showPublication.appendChild(state.liens).appendChild(state.article),
-        
-        state.images.src = publication.imageUrl,
-        state.images.alt = publication.titre,
-        state.showPublication.appendChild(state.liens).appendChild(state.article).appendChild(state.images),
-        
-        state.publicationTitre.classList.add("publicationTitre"),
-        state.publicationTitre.innerText = publication.titre,
-        state.showPublication.appendChild(state.liens).appendChild(state.article).appendChild(state.publicationTitre);
-        /*
-        let pubDescription = document.createElement("p");
-        pubDescription.classList.add("publicationDescription");
-        pubDescription.innerText = publication.description;
-        state.showPublication.appendChild(liens).appendChild(article).appendChild(pubDescription); */
-    
- }
   },
   mutations: {
-    // exemple
+    
     setStatus: function (state, status) {
       state.status = status;
     },
     logUser: function (state, userInfos) {
       instance.defaults.headers.common['Authorization'] = userInfos.token;
-      localStorage.setItem('userInfos', JSON.stringify(userInfos));
+      sessionStorage.setItem('userInfos', JSON.stringify(userInfos));
       state.userInfos = userInfos;
     },
     userInfos: function (state, userInfos) {
@@ -124,7 +68,13 @@ export default createStore({
         role: '',
         token: ''
       }
-      localStorage.removeItem('userInfos');
+      sessionStorage.removeItem('userInfos');
+    },
+    setUserInfos: function (state, status) {
+      state.status = status;
+    },
+    setCurrentPublication: function (state, status) {
+      state.status = status;
     },
   },
   actions: {
@@ -159,39 +109,76 @@ export default createStore({
         });
      });
     },
-    /* // récuprération des infos de l'utilisateur
+    // récuprération des infos de l'utilisateur
     getUserInfos: ({commit}) => {
-      instance.post('auth/infos') // route inexistante dans l'api
+      instance.post('auth/user')
       .then(function (response) {
-        commit('userInfos', response.data.infos);
+        commit('userInfos', response.data);
       })
       .catch(function (error) {
-        commit('setStatus', 'error_create');
+        return error;
       });
-    }*/
-    /*async fetch(state) {
-      state.publication = await 
-    },*/
-    async getPublication() {
-      return await fetch('http://localhost:3000/api/publication/')
-      .then( function(reponse) { return reponse.json()})
-      .then( function(publications) { return publications})
-      .catch( alert('error publication'))
     },
-    setCurrentPublication ({commit, state}, publicationId) {
-      let publicationFound = {};
-      // A CHANGER
-      state.publicationSchema.forEach((publication) => {
-        if(publicationId == publication.id) {
-          publicationFound = publication;
-        }
+    // création d'une publication
+    publicationPost: ({ commit }, publicationInfos) => {
+			commit("publicationInfos", "created");
+			return new Promise((resolve, reject) => {
+				commit;
+				instance.post("/publications", publicationInfos)
+        .then(function (response) {
+          commit("publicationInfos", response);
+          resolve(response);
+        })
+        .catch(function (error) {
+          commit("setStatus", "error_signIn");
+          reject(console.log(error));
+        });
+			});
+		},
+    // récupération d'une d'une publication
+		publicationId: ({ commit }, messages) => {
+			instance.get("/publications/" + messages.id)
+				.then(function (response) {
+					commit("setMessage", response.data.publication);
+					this.feed = response.data.publication.data;
+				})
+				.catch(function (error) {
+					return error
+				});
+		},
+    // récupérations des publications
+		allPublications: ({ commit }) => {
+			instance.get("/publications")
+      .then(function (response) {
+        commit("setMessages", response.data.publication);
+        this.list = response.data.publication;
+      })
+      .catch(function (error) {
+        return error
       });
-      commit('setCurrentPublication', publicationFound);
-    }
+		},
+    // mise à jour d'une publication
+		updatePublication({ commit }, message) {
+			instance.put("/publications/" + message.id, {
+					message: message.message,
+      })
+      .then(function (response) {
+        commit("publicationInfos", response.data);
+      })
+      .catch(function (error) {
+        return error
+      });
+		},
+    // suppression d'une publication
+		deletePublication({ commit }, message) {
+			instance.delete("/publications/" + message.id).then(function (reponse) {
+				commit("publicationInfos", reponse.data);
+			});
+		},
   },
   modules: {
   }
-})
+});
 
 /*
 getters :

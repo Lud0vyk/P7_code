@@ -16,20 +16,13 @@
 </script>
 
 <style lang="scss">
-/* identité graphique
-police d’écriture : Lato.
-Couleurs :
-● Primaire : #FD2D01
-● Secondaire : #FFD7D7
-● Tertiaire : #4E5166
-
-*** *** *** */
 
 #app {
   font-family: Lato, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  // Tertiaire : #4E5166
   color: #4E5166;
 }
 
@@ -43,9 +36,11 @@ nav {
     text-decoration: none;
 
     &.router-link-exact-active {
+      // Primaire : #FD2D01
       color: #FD2D01;
     }
     &:hover {
+      // Secondaire : #FFD7D7
       color: #FFD7D7;
     }
   }
@@ -77,6 +72,12 @@ img {
   &--disable {
     background-color: red;
   }
+
+  @media (max-width: 768px) {
+	.card {
+		width: auto;
+	}
+}
 }
 
 </style>

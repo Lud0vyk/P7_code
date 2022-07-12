@@ -6,12 +6,19 @@ const user = require('../models/user');
 
 // création d'une nouvelle publication
 exports.createPublication = (req, res, next) => {
+
+  const token = req.headers.authorization;
+	const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+	const userId = decodedToken.userId;
+
   const publicationObject = JSON.parse(req.body.publication);
   delete publicationObject._id;
   const publication = new Publication({
     ...publicationObject,
     userName: req.body.userName,
-    userId: req.body.userId,
+    userId: userId,
+    titre: req.body.titre,
+    description: req.body.description,
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
     validation: false,
     date: req.body.date,

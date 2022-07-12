@@ -72,11 +72,23 @@ export default {
                 console.log(this.UserPublication);
             }
         },
-        consoleLog() {
-            //console.log();
-            console.log("pub.vue");
-            console.log(this.email, this.password);
-        }
+        goToUpdate(id) {
+			this.$router.push("/publication/" + id);
+		},
+        deletePublication() {
+			this.$store.dispatch("deletePublication", { id: this.id });
+			this.$router.push("/");
+			window.alert(
+				"La publication supprimée."
+			);
+		},
+		switchStatus() {
+			this.$store.dispatch("updateStatus", { id: this.id });
+			this.$router.push("/");
+			window.alert(
+				"La publication validée."
+			);
+		},
     },
     computed: {
         

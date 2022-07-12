@@ -9,15 +9,14 @@
 
       </div>
 
-      <div v-if="userInfos.role !='admin'" class="card"><!-- changer la condition -->
+      <div v-if="userInfos.role =='admin'" class="card"><!-- changer la condition -->
         <h3>admin</h3>
         <div v-for="(publication, id) in publicationSortedByDate(publications)" :key="id">
         <nav>
-          <!--<router-link :to="{name: 'publication', params: {id: publication.id}}" >  -->
-          <router-link :to=showPublication(publication.id)>
+          <div :to=publicationId(publication.id)>
             <img :src="publication.imageUrl" :alt="publication.description"/>
             <h3>{{ publication.titre }}</h3>
-          </router-link>
+          </div>
         </nav>
         </div>
       </div>
@@ -26,10 +25,10 @@
         <div v-for="(publication, id) in publicationSortedByDate(publications)" :key="id">
           <div v-if="publication.validation">
             <nav>
-              <router-link :to=showPublication(publication.id)>
+              <div :to=publicationId(publication.id)>
                 <img :src="publication.imageUrl" :alt="publication.description"/>
                 <h3>{{ publication.titre }}</h3>
-              </router-link>
+              </div>
             </nav>
           </div>
         </div>
@@ -38,7 +37,7 @@
             <h3>Veuillez vous connecter.</h3>
       </div>
       <div v-else>
-            <h3> ERROR 404 </h3>
+            <div @load="redirection()"></div>
       </div>
 
     </div>
@@ -47,14 +46,8 @@
       <button @click="logout()" class="button"> Logout </button>
     </div>
 
-    <hr>
-    <button @click="consoleLog()" class="button"> console.log </button>
-    <button @click="publicationSortedbyDate(publications)" class="button"> console.log 2 </button>
-
     <section class="items" id="items">
       <span v-if="publications.length < 1"> Il n'y aucune publication </span>
-    <!-- router-link :to="{name: 'publication', params: {name: 'id'}}></router-link> ex à supprimer -->
-    <!-- <a @click="showPublication('publication.id');"></a> ex à incorporer -->
     </section>
 
   </div>
@@ -63,6 +56,7 @@
 
 <script>
 
+import { mapState } from "vuex";
 import axios from 'axios';
 //import router from 'vue-router';
 
@@ -70,30 +64,24 @@ export default {
   name: 'HomePage',
   data() {
         return {
-           publications: this.$store.state.publicationSchema,
+           publications: [this.$store.dispatch("allPublications")],
            userInfos: this.$store.state.userInfos,
-           error: this.$store.state.error,
-           publicationsOrderbyDate: [],
-           mostRecentDate: '',
-           datedujour: ''
         }
   },
   methods: {
-    consoleLog() {
-      //console.log(this.publication.imageUrl);
-      console.log("Home methods");
-      console.log(this.userInfos);
-      console.log(this.publications);
-      console.log(this.datedujour =  Date.now());
-   },
     logout() {
       this.$store.commit('logout');
-      this.$router.push('/');
+      this.$router.push('/login');
+    },
+    redirection() {
+      this.$router.push('/signup');
     },
     showPublication: function(id) {
       this.$router.push({name: 'publication', params: {id: id}});
-      console.log(this.$router);
     },
+    publicationId(id) {
+			this.$router.push("/publications/" + id);
+		},
     updatePost() {
       axios.get('http://localhost:3000/api/')
       .then(res => {this.publicationsReceived = res.data })
@@ -104,29 +92,12 @@ export default {
       return publications.sort((a,b) => b.date - a.date);
     },
 
-
   },
   computed: {
-    showPublications() {
-      if(this.user.role === 'admin') {
-        // affichage de toute les publications
-        return this.$store.commit('getPublication');
-      } else if(this.user.role === 'user') {
-        // affichage de toute les publications validées
-         return this.$store.commit('getPublication');
-      } else {
-        // message d'enristrement.
-        return this.error;
-      }
-    }
-
-    /*consoleLog2() {
-      return {
-        console.log(this.publication.imageUrl);
-        console.log('comp');
-        console.log(this.user);
-      }
-    },*/
+    ...mapState({
+			publication: "currentPublication",
+			user:"userInfos",
+		})
   }
 }
 
@@ -154,11 +125,6 @@ a {
   display: wrap;
   flex-wrap: wrap;
   .card {
-    //display: grid;
-    /*display: flex;
-    flex-direction:row;
-    flex-wrap:wrap;*/
-    //width: 30%;
 
     img {
       width: 15%;

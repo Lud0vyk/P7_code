@@ -21,8 +21,7 @@
         </div>
     </div>
 
-    <hr>
-    <button @click="consoleLog()" class="button"> console.log </button>
+    <button @click="logout()" class="button"> Logout </button>
 
 </template>
 
@@ -65,11 +64,9 @@ export default {
                 console.log(error);
             });
         },
-        consoleLog() {
-            //console.log();
-            console.log("login.vue");
-            console.log(this.email, this.password);
-            console.log(localStorage.userInfos);
+        logout() {
+        this.$store.commit('logout');
+        this.$router.push('/login');
         }
     }
 }
