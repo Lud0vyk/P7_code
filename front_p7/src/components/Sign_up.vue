@@ -28,7 +28,6 @@
 <script>
 
 import { mapState } from 'vuex';
-//import router from 'vue-router';
 
 export default {
 

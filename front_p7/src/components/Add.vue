@@ -74,7 +74,6 @@ export default {
            
             mode: 'add',
             user: this.$store.state.userInfos,
-            //selectedFile: null,
             publication: this.$store.state.currentPublication,
             post: {
                 title: '',
@@ -91,80 +90,28 @@ export default {
         this.post.image = this.$refs.image.files[0];
     },
     onUpload() {
-			const formData = new FormData();
-			formData.append("title", this.post.title);
-			formData.append("description", this.post.description);
-            formData.append("image", this.post.image);
-            formData.append("date", Date.now);
+        const formData = new FormData();
+        formData.append("userName", this.user.name);
+        formData.append("title", this.post.title);
+        formData.append("description", this.post.description);
+        formData.append("image", this.post.image);
+        formData.append("date", Date.now);
 
-			if (formData.get("image") === "" && formData.get("message") === "") {
-				let messageError = document.getElementById("error_message");
-				messageError.classList.add("text-danger");
-				this.messageError ="Votre devez nous partager au moins une photo et un message !";
-			} else {
-				this.$store.dispatch("publicationPost", formData);
-				if (this.user.role === 'admin') {
-					window.alert("Votre publication a été posté.");
-					window.location.reload();
-				} else {
-                    window.alert("Votre publication a bien été posté. Un de nos administrateurs va valider votre poste.");
-                    window.location.reload();
-				}
-			}
-		},/*
-    onUpload() {
-        const fd = new FormData();
-        
-        fd.append('image', this.selectedFile, this.selectedFile.name);
-
-        /*this.publication =  new publication {
-            this.userId = this.userInfos.id,
-            this.userName = this.userInfos.name,
-            this.title = this.title,
-            this.description = this.description,
-            this.imageUrl = fd,
-            this.likes = 0,
-            this.dislikes = 0
-        };*/
-/*
-        axios.post('http://localhost:3000/api/publication', this.userInfos.id, {
-            userId : this.userInfos.id,
-            userName : this.userInfos.name,
-            title : this.title,
-            description : this.description,
-            imageUrl : this.selectedFile.name,
-            date: Date.now(),
-            likes : 0,
-            dislikes : 0,
-            file: fd
-        })
-        .then(res => {
-            console.log(res)
-        }).catch(function (error) {
-            console.log(error);
-        });
-    },*/
-
-    addPublication() {
-        const self = this;
-        this.$store.dispatch('addPublication', {
-            userId: this.user.id,
-            userName: this.userInfos.name,
-            title: this.title,
-            description: this.description,
-            date: 0,
-            validation: false,
-            likes: 0,
-            dislikes: 0
-        })
-        .then(function (response) {
-            self.$router.push('home');
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    }
+        if (formData.get("image") === "" && formData.get("message") === "") {
+            let messageError = document.getElementById("error_message");
+            messageError.classList.add("text-danger");
+            this.messageError ="Votre devez nous partager au moins une photo et un message !";
+        } else {
+            this.$store.dispatch("publicationPost", formData);
+            if (this.user.role === 'admin') {
+                window.alert("Votre publication a été posté.");
+                window.location.reload();
+            } else {
+                window.alert("Votre publication a bien été posté. Un de nos administrateurs va valider votre poste.");
+                window.location.reload();
+            }
+        }
+	},
   },
   computed: {
         validatedFields() {
@@ -174,15 +121,7 @@ export default {
                 return true;
             }
         },
-        // ajouter || this.addImg == "" quand je saurais
-        /*validatedFields() {
-            if(this.title != "" && this.description != "") {
-                return true;
-            } else {
-                return false;
-            }
-        },*/
-        ...mapState(['status'])
+        ...mapState(['status', 'userInfos'])
   }
 }
 

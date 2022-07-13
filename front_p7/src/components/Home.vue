@@ -66,6 +66,14 @@ export default {
         return {
            publications: [this.$store.dispatch("allPublications")],
            userInfos: this.$store.state.userInfos,
+           post: {
+                title: '',
+                description: '',
+                date: '',
+                image: '',
+                imageData: ''
+            },
+            messageError: '',
         }
   },
   methods: {

@@ -66,11 +66,12 @@ img {
   padding: 0.7em 3em 0.7em 3em  ;
   font-weight: bold;
   font-size: 0.9em;
-  background-color: green;
-
+  background-color: #2c3e50;
+  color: #eee;
 
   &--disable {
-    background-color: red;
+    background-color: #FFD7D7;
+    color: #2c3e50;
   }
 
   @media (max-width: 768px) {

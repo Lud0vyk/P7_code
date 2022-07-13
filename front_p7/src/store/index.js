@@ -136,7 +136,7 @@ export default createStore({
 			});
 		},
     // récupération d'une d'une publication
-		publicationId: ({ commit }, messages) => {
+		/*publicationId: ({ commit }, messages) => {
 			instance.get("/publications/" + messages.id)
 				.then(function (response) {
 					commit("setMessage", response.data.publication);
@@ -145,7 +145,7 @@ export default createStore({
 				.catch(function (error) {
 					return error
 				});
-		},
+		},*/
     // récupérations des publications
 		allPublications: ({ commit }) => {
 			instance.get("/publications")
@@ -171,7 +171,8 @@ export default createStore({
 		},
     // suppression d'une publication
 		deletePublication({ commit }, message) {
-			instance.delete("/publications/" + message.id).then(function (reponse) {
+			instance.delete("/publications/" + message.id)
+      .then(function (reponse) {
 				commit("publicationInfos", reponse.data);
 			});
 		},

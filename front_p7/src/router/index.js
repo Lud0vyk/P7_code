@@ -7,15 +7,6 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView,
-    /*children: [
-      {
-        // lors d'un clic sur une publication
-        path: '/publication/:id',
-        name: 'publication',
-        props: true,
-        component: () => import(/* webpackChunkName: "publication" *//* '../views/PublicationView.vue')
-      }
-    ]*/
   },
   {
     path: '/sign_up',
@@ -59,7 +50,7 @@ const router = createRouter({
   routes
 });
 
-// nom par défault refaire si j'ai le temps
+// nom par défault
 router.afterEach((to) => {
   to.meta.title = 'Groupomania';
   document.title = to.meta.title;
