@@ -1,19 +1,21 @@
 <template>
   <div class="home">
-        <img alt="logo groupomania" src="../assets/icon-left-font.png">
-        <Login_vue/>
+    <LogoVue/>
+    <Login_vue/>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
+
+import LogoVue from '@/components/Logo.vue';
 import Login_vue from '@/components/Login.vue';
 
 export default {
 
   name: 'LoginView',
     components: {
-    Login_vue
+    Login_vue,
+    LogoVue
   }
 }
 </script>

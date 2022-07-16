@@ -47,9 +47,7 @@ nav {
 }
 
 img {
-  width: 20%;
-  min-width: 200px;
-  align-items: center;
+  max-width: 300px;
 }
 
 .form-row {
@@ -69,9 +67,12 @@ img {
   background-color: #2c3e50;
   color: #eee;
 
-  &--disable {
+  &--disable
+  {
     background-color: #FFD7D7;
     color: #2c3e50;
+    cursor: not-allowed;
+    pointer-events: none;
   }
 
   @media (max-width: 768px) {

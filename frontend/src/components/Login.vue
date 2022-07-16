@@ -44,6 +44,7 @@ export default {
             email: '',
             password: '',
             //user: this.$store.state.user,
+            error: ''
         }
     },
     computed: {

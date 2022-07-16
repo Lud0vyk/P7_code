@@ -28,6 +28,7 @@ export default createStore({
   // état
   state: {
     status: '',
+    user: user,
     userInfos: {
       nom: '',
       email: '',
@@ -42,6 +43,10 @@ export default createStore({
       validation: "",
       image: ""
     },
+    imageLogo: {
+      alt:"logo groupomania",
+      src: require("@/assets/icon-left-font.png")
+    }
   },
   getters: {
   },
@@ -71,6 +76,9 @@ export default createStore({
     setCurrentPublication: function (state, currentPublication) {
       state.currentPublication = currentPublication;
     },
+    functionLogo2 () {
+      return require("@/assets/icon-left-font.png");
+    }
   },
   actions: {
     // création du compte utilisteur
@@ -171,6 +179,9 @@ export default createStore({
 				commit("publicationInfos", reponse.data);
 			});
 		},
+    functionLogo () {
+      return require("@/assets/icon-left-font.png");
+    }
   },
   modules: {
   }

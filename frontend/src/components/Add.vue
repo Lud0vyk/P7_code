@@ -103,7 +103,7 @@ export default {
             this.messageError ="Votre devez nous partager au moins une photo et un message !";
         } else {
             this.$store.dispatch("publicationPost", formData);
-            if (this.user.role === 'admin') {
+            if (this.user.role === "admin") {
                 window.alert("Votre publication a été posté.");
                 window.location.reload();
             } else {

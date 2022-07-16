@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="logo groupomania" src="../assets/icon-left-font.png">
+    <LogoVue/>
     <HomePage/>
   </div>
 </template>
@@ -8,13 +8,15 @@
 
 <script>
 // @ is an alias to /src
-import HomePage from '@/components/Home.vue'
+import LogoVue from '@/components/Logo.vue';
+import HomePage from '@/components/Home.vue';
 
 export default {
 
   name: 'HomeView',
     components: {
-    HomePage
+    HomePage,
+    LogoVue
   }
 }
 

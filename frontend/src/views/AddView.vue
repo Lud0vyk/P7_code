@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="logo groupomania" src="../assets/icon-left-font.png">
+    <LogoVue/>
     <userAdd/>
   </div>
 </template>
@@ -8,13 +8,15 @@
 
 <script>
 
+import LogoVue from '@/components/Logo.vue';
 import userAdd from '@/components/Add.vue';
 
 export default {
 
   name: 'AddView',
     components: {
-    userAdd
+    userAdd,
+    LogoVue
   }
  
 }

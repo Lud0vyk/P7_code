@@ -3,8 +3,10 @@
     <div class="card">
         <h1>Sign up</h1>
         <div class="form-row">
+             <!-- v-validate="'required|email'"
+                :rules='emailRules' -->
             <p> Name : <input
-                v-validate="'required|email'"
+           
                 v-model="name" 
                 class="form-row_input" 
                 type="text" 
@@ -44,6 +46,7 @@
 <script>
 
 import { mapState } from 'vuex';
+//import { Vuelidate } from 'vuelidate';
 
 export default {
 
@@ -53,7 +56,9 @@ export default {
             mode: 'signup',
             email: '',
             password: '',
-            name: ''
+            name: '',
+            emailRules: [ v => !!v || 'Email is required', v => /.+@.+/.test(v) || 'E-mail must be valid' ],
+            imageLogo: this.$store.imageLogo,
         }
     },
     computed: {
