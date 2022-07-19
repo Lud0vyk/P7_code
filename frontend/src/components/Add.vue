@@ -56,7 +56,7 @@
                 </button>
             </div>
         </form>
-  
+
     </div>
 
 </template>
@@ -64,7 +64,6 @@
 
 <script>
 
-//import axios from 'axios';
 import { mapState } from 'vuex';
 
 export default {
@@ -74,7 +73,7 @@ export default {
            
             mode: 'add',
             user: this.$store.state.user,
-            publication: this.$store.state.currentPublication,
+            publication: this.$store.state.publicationInfos,
             post: {
                 title: '',
                 description: '',
@@ -91,27 +90,40 @@ export default {
     },
     onUpload() {
         const formData = new FormData();
-        formData.append("userName", this.user.name);
+        let newDate =  Date.now();
+
+        formData.append("userId", this.user.userId);
         formData.append("title", this.post.title);
         formData.append("description", this.post.description);
         formData.append("image", this.post.image);
-        formData.append("date", Date.now);
+        formData.append("date", newDate);
 
-        if (formData.get("image") === "" && formData.get("message") === "") {
+        /*if (formData.get("image") === "" && formData.get("message") === "") {
             let messageError = document.getElementById("error_message");
             messageError.classList.add("text-danger");
             this.messageError ="Votre devez nous partager au moins une photo et un message !";
+        } else {*/
+        this.$store.dispatch("publicationPost", formData);
+        if (this.user.role === "admin") {
+            window.alert("Votre publication a été posté.");
+            window.location.reload();
         } else {
-            this.$store.dispatch("publicationPost", formData);
-            if (this.user.role === "admin") {
-                window.alert("Votre publication a été posté.");
-                window.location.reload();
-            } else {
-                window.alert("Votre publication a bien été posté. Un de nos administrateurs va valider votre poste.");
-                window.location.reload();
-            }
+            window.alert("Votre publication a bien été posté. Un de nos administrateurs va valider votre poste.");
+            window.location.reload();
         }
 	},
+    // prévisualisation de l'image
+    inputPreview(e) {
+        this.post.image = this.$refs.image.files[0] || e.dataTransfer.files;
+        let input = event.target;
+        if (input.files && input.files[0]) {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                this.post.imageData = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    },
   },
   computed: {
         validatedFields() {

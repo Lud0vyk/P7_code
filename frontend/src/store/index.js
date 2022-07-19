@@ -34,18 +34,14 @@ export default createStore({
       email: '',
       role: ''
     },
-    currentPublication: {
+    publicationInfos: {
       userName: "",
       userId: "",
-      titre: "",
+      title: "",
       description: "",
       date: "",
       validation: "",
       image: ""
-    },
-    imageLogo: {
-      alt:"logo groupomania",
-      src: require("@/assets/icon-left-font.png")
     }
   },
   getters: {
@@ -70,15 +66,9 @@ export default createStore({
       }
       sessionStorage.removeItem('user');
     },
-    setUserInfos: function (state, userInfos) {
-      state.userInfos = userInfos;
-    },
     setCurrentPublication: function (state, currentPublication) {
       state.currentPublication = currentPublication;
     },
-    functionLogo2 () {
-      return require("@/assets/icon-left-font.png");
-    }
   },
   actions: {
     // création du compte utilisteur
@@ -133,22 +123,11 @@ export default createStore({
           resolve(response);
         })
         .catch(function (error) {
-          commit("setStatus", "error_signIn");
+          commit("setStatus", "error_publicationPost");
           reject(console.log(error));
         });
 			});
 		},
-    // récupération d'une d'une publication
-		/*publicationId: ({ commit }, messages) => {
-			instance.get("/publications/" + messages.id)
-				.then(function (response) {
-					commit("setMessage", response.data.publication);
-					this.feed = response.data.publication.data;
-				})
-				.catch(function (error) {
-					return error
-				});
-		},*/
     // récupérations des publications
 		allPublications: ({ commit }) => {
 			instance.get("/publications")

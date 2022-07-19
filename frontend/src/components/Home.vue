@@ -15,7 +15,7 @@
         <nav>
           <div :to=publicationId(publication.id)>
             <img :src="publication.imageUrl" :alt="publication.description"/>
-            <h3>{{ publication.titre }}</h3>
+            <h3>{{ publication.title }}</h3>
           </div>
         </nav>
         </div>
@@ -27,7 +27,7 @@
             <nav>
               <div :to=publicationId(publication.id)>
                 <img :src="publication.imageUrl" :alt="publication.description"/>
-                <h3>{{ publication.titre }}</h3>
+                <h3>{{ publication.title }}</h3>
               </div>
             </nav>
           </div>
@@ -87,6 +87,7 @@ export default {
     showPublication: function(id) {
       this.$router.push({name: 'publication', params: {id: id}});
     },
+    // voir laquel est mieux des 2 méthodes
     publicationId(id) {
 			this.$router.push("/publications/" + id);
 		},
@@ -99,11 +100,11 @@ export default {
 
       return publications.sort((a,b) => b.date - a.date);
     },
-
   },
   computed: {
     ...mapState({
-			publication: "currentPublication",
+			publication: "publicationInfos",
+      userInfos: "userInfos",
 			user:"user",
 		})
   }
