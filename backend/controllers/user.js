@@ -42,12 +42,33 @@ exports.login = (req, res, next) => {
               userId: user._id,
               token: jwt.sign(
                 { userId: user._id },
-                'RANDOM_TOKEN_SECRET',
+                `${process.env.DB_TOKEN}`,
                 { expiresIn: '24h' }
               )
             });
           })
-          .catch(error => res.status(500).json({ error }));
+        .catch(error => res.status(500).json({ error }));
       })
       .catch(error => res.status(500).json({ error }));
+};
+
+// pour récupérer les données utilisateur
+exports.profile = (req, res, next) => {
+	const token = req.headers.authorization;
+	const decodedToken = jwt.verify(token, `${process.env.DB_TOKEN}`);
+	const userId = decodedToken.userId;
+
+	User.findOne({ _id: userId })
+		.then(function (user) {
+			if (user) {
+        res.status(201).json(user);
+        console.log("userInfos");
+        console.log(this.userInfos);
+			} else {
+				res.status(404).json({ error: "Utilisateur non trouvé." });
+        console.log("userInfos");
+        console.log(this.userInfos);
+			}
+		})
+		.catch(function (err) {res.status(500).json({ error: console.log(err) });	});
 };

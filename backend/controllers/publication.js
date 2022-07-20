@@ -74,7 +74,7 @@ exports.deletePublication = (req, res, next) => {
 exports.getAllPublication = (req, res, next) => {
   Publication.find()
     .then((publications) => {res.status(200).json(publications);})
-    .catch((error) => {res.status(400).json({error: error});});
+    .catch((error) => {res.status(400).json({error: "no publication"});});
 }
 
 // pour valider une publication

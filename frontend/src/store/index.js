@@ -35,6 +35,7 @@ export default createStore({
       role: ''
     },
     publicationInfos: {
+      id: "",
       userName: "",
       userId: "",
       title: "",
@@ -43,8 +44,6 @@ export default createStore({
       validation: "",
       image: ""
     }
-  },
-  getters: {
   },
   mutations: {
     
@@ -66,8 +65,8 @@ export default createStore({
       }
       sessionStorage.removeItem('user');
     },
-    setCurrentPublication: function (state, currentPublication) {
-      state.currentPublication = currentPublication;
+    publicationInfos: function (state, publicationInfos) {
+      state.publicationInfos = publicationInfos;
     },
   },
   actions: {
@@ -104,7 +103,7 @@ export default createStore({
     },
     // récuprération des infos de l'utilisateur
     getUserInfos: ({commit}) => {
-      instance.post('auth/user')
+      instance.post('auth/profile')
       .then(function (response) {
         commit('userInfos', response.data);
       })
@@ -130,10 +129,12 @@ export default createStore({
 		},
     // récupérations des publications
 		allPublications: ({ commit }) => {
+      commit;
 			instance.get("/publications")
       .then(function (response) {
-        commit("setMessages", response.data.publication);
-        this.list = response.data.publication;
+        // null commit("setMessages", response.data.publication);
+        
+        this.publications = response.data.publication;
       })
       .catch(function (error) {
         return error
@@ -152,15 +153,14 @@ export default createStore({
       });
 		},
     // suppression d'une publication
-		deletePublication({ commit }, message) {
-			instance.delete("/publications/" + message.id)
+		deletePublication({ commit }, id) {
+			instance.delete("/publications/" + id)
       .then(function (reponse) {
 				commit("publicationInfos", reponse.data);
 			});
 		},
-    functionLogo () {
-      return require("@/assets/icon-left-font.png");
-    }
+  },
+  getters: {
   },
   modules: {
   }

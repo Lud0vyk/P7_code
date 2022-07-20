@@ -13,10 +13,10 @@
         <h3>admin</h3>
         <div v-for="(publication, id) in publicationSortedByDate(publications)" :key="id">
         <nav>
-          <div :to=publicationId(publication.id)>
+          <!-- <div :to=publicationId(publication.id)> -->
             <img :src="publication.imageUrl" :alt="publication.description"/>
             <h3>{{ publication.title }}</h3>
-          </div>
+          <!-- </div> -->
         </nav>
         </div>
       </div>
@@ -25,10 +25,10 @@
         <div v-for="(publication, id) in publicationSortedByDate(publications)" :key="id">
           <div v-if="publication.validation">
             <nav>
-              <div :to=publicationId(publication.id)>
+              <!-- <div :to=publicationId(publication.id)> -->
                 <img :src="publication.imageUrl" :alt="publication.description"/>
                 <h3>{{ publication.title }}</h3>
-              </div>
+              <!-- </div> -->
             </nav>
           </div>
         </div>
@@ -51,30 +51,34 @@
     </section>
 
   </div>
+
+  <hr>
+    <button @click="consoleLog()" class="button"> console.log </button>
   <router-view />
 </template>
 
 <script>
 
 import { mapState } from "vuex";
-import axios from 'axios';
+//import axios from 'axios';
 //import router from 'vue-router';
 
 export default {
   name: 'HomePage',
   data() {
-        return {
-           publications: [this.$store.dispatch("allPublications")],
-           userInfos: this.$store.state.userInfos,
-           post: {
-                title: '',
-                description: '',
-                date: '',
-                image: '',
-                imageData: ''
-            },
-            messageError: '',
-        }
+    return {
+      loading: false,
+      publications: [this.$store.dispatch("allPublications")],
+      userInfos: this.$store.state.userInfos,
+      post: {
+          title: '',
+          description: '',
+          date: '',
+          image: '',
+          imageData: ''
+      },
+      messageError: '',
+    }
   },
   methods: {
     logout() {
@@ -89,22 +93,39 @@ export default {
     },
     // voir laquel est mieux des 2 méthodes
     publicationId(id) {
-			this.$router.push("/publications/" + id);
+			this.$router.push("/publication/" + id);
 		},
-    updatePost() {
+
+    /*updatePost() {
       axios.get('http://localhost:3000/api/')
       .then(res => {this.publicationsReceived = res.data })
       .catch(function (error) {console.log(error) })
-    },
+    },*/
     publicationSortedByDate(publications) {
 
       return publications.sort((a,b) => b.date - a.date);
     },
+    consoleLog() {
+        //console.log();
+        console.log("userInfos");
+        console.log(this.userInfos);
+    }
   },
+	mounted() {
+		this.loading = true;
+		//this.id = this.$route.params.id;
+
+		if (this.$store.state.user.userId == -1) {
+			this.$router.push("/sign_up");
+			return;
+		}
+		//this.$store.dispatch("publicationId", { id: this.$route.params.id });
+    this.$store.dispatch("getUserInfos");
+	},
   computed: {
     ...mapState({
 			publication: "publicationInfos",
-      userInfos: "userInfos",
+     // userInfos: "userInfos",
 			user:"user",
 		})
   }
