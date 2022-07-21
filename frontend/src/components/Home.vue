@@ -9,9 +9,9 @@
 
       </div>
 
-      <div v-if="userInfos.role =='admin'" class="card"><!-- changer la condition -->
+      <div v-if="user.role =='admin'" class="card"><!-- changer la condition -->
         <h3>admin</h3>
-        <div v-for="(publication, id) in publicationSortedByDate(publications)" :key="id">
+        <div v-for="(publication, id) in publicationSortedByDate(publicationsList)" :key="id">
         <nav>
           <!-- <div :to=publicationId(publication.id)> -->
             <img :src="publication.imageUrl" :alt="publication.description"/>
@@ -20,9 +20,9 @@
         </nav>
         </div>
       </div>
-      <div v-else-if="userInfos.role =='user'" class="card">
+      <div v-else-if="user.role =='user'" class="card">
          <h3>user</h3>
-        <div v-for="(publication, id) in publicationSortedByDate(publications)" :key="id">
+        <div v-for="(publication, id) in publicationSortedByDate(publicationsList)" :key="id">
           <div v-if="publication.validation">
             <nav>
               <!-- <div :to=publicationId(publication.id)> -->
@@ -33,7 +33,7 @@
           </div>
         </div>
       </div>
-      <div v-else-if="userInfos.role ==''">
+      <div v-else-if="user.role ==''">
             <h3>Veuillez vous connecter.</h3>
       </div>
       <div v-else>
@@ -42,34 +42,32 @@
 
     </div>
     
-    <div v-if="userInfos.id !=''">
+    <div v-if="user.id !=''">
       <button @click="logout()" class="button"> Logout </button>
     </div>
 
     <section class="items" id="items">
-      <span v-if="publications.length < 1"> Il n'y aucune publication </span>
+      <span v-if="publicationsList.length < 1"> Il n'y aucune publication </span>
     </section>
 
   </div>
 
   <hr>
     <button @click="consoleLog()" class="button"> console.log </button>
+    <button @click="affichage()" class="button"> publications </button>
   <router-view />
 </template>
 
 <script>
 
 import { mapState } from "vuex";
-//import axios from 'axios';
-//import router from 'vue-router';
 
 export default {
   name: 'HomePage',
   data() {
     return {
       loading: false,
-      publications: [this.$store.dispatch("allPublications")],
-      userInfos: this.$store.state.userInfos,
+      publicationsList: [this.$store.dispatch("getAllPublications")],
       post: {
           title: '',
           description: '',
@@ -95,20 +93,20 @@ export default {
     publicationId(id) {
 			this.$router.push("/publication/" + id);
 		},
+    publicationSortedByDate(publicationsList) {
 
-    /*updatePost() {
-      axios.get('http://localhost:3000/api/')
-      .then(res => {this.publicationsReceived = res.data })
-      .catch(function (error) {console.log(error) })
-    },*/
-    publicationSortedByDate(publications) {
-
-      return publications.sort((a,b) => b.date - a.date);
+      return publicationsList.sort((a,b) => b.date - a.date);
     },
     consoleLog() {
         //console.log();
-        console.log("userInfos");
-        console.log(this.userInfos);
+        console.log("session");
+        console.log(this.user);
+    },
+    affichage() {
+      this.publicationsList = [this.$store.dispatch("getAllPublications")];
+      console.log("publicationsList");
+        console.log(this.publicationsList);
+      return this.publicationsList;
     }
   },
 	mounted() {
@@ -120,7 +118,7 @@ export default {
 			return;
 		}
 		//this.$store.dispatch("publicationId", { id: this.$route.params.id });
-    this.$store.dispatch("getUserInfos");
+    //this.$store.dispatch("getUserInfos");
 	},
   computed: {
     ...mapState({

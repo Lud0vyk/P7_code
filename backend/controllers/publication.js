@@ -71,9 +71,11 @@ exports.deletePublication = (req, res, next) => {
 }
 
 // pour afficher toutes les publications
-exports.getAllPublication = (req, res, next) => {
+exports.getAllPublications = (req, res, next) => {
   Publication.find()
-    .then((publications) => {res.status(200).json(publications);})
+    
+    /* .limit(5) ça pourrait être utile plus tard */
+    .then((publications) => {res.status(200).json({ publications });})
     .catch((error) => {res.status(400).json({error: "no publication"});});
 }
 

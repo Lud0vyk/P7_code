@@ -10,6 +10,8 @@ let user = sessionStorage.getItem('user');
 if(!user) {
   user = {
     id: -1,
+    name: '',
+    role: '',
     token: ''
   }
 } else {
@@ -19,6 +21,8 @@ if(!user) {
   } catch {
     user = {
       id: -1,
+      name: '',
+      role: '',
       token: ''
     }
   }
@@ -50,17 +54,23 @@ export default createStore({
     setStatus: function (state, status) {
       state.status = status;
     },
+    setPublications: function (state, publications) {
+			state.publicationsList = publications;//.slice().reverse();
+		},
     logUser: function (state, user) {
       instance.defaults.headers.common['Authorization'] = user.token;
       sessionStorage.setItem('user', JSON.stringify(user));
       state.user = user;
     },
+    /* plus nécéssaire XXXXX
     userInfos: function (state, userInfos) {
       state.userInfos = userInfos;
-    },
+    },*/
     logout: function (state) {
       state.user = {
         id: '',
+        name: '',
+        role: '',
         token: ''
       }
       sessionStorage.removeItem('user');
@@ -101,6 +111,7 @@ export default createStore({
         });
      });
     },
+    /* plus nécéssaire XXXXX
     // récuprération des infos de l'utilisateur
     getUserInfos: ({commit}) => {
       instance.post('auth/profile')
@@ -110,7 +121,7 @@ export default createStore({
       .catch(function (error) {
         return error;
       });
-    },
+    },*/
     // création d'une publication
     publicationPost: ({ commit }, publicationInfos) => {
 			commit("publicationInfos", "created");
@@ -128,13 +139,12 @@ export default createStore({
 			});
 		},
     // récupérations des publications
-		allPublications: ({ commit }) => {
-      commit;
+		getAllPublications: ({ commit }) => {
+      //commit;
 			instance.get("/publications")
       .then(function (response) {
-        // null commit("setMessages", response.data.publication);
-        
-        this.publications = response.data.publication;
+        commit("setPublications", response.data.publication);
+        this.publicationsList = response.data.publication;
       })
       .catch(function (error) {
         return error

@@ -40,6 +40,8 @@ exports.login = (req, res, next) => {
             }
             res.status(200).json({
               userId: user._id,
+              userName: user.name,
+              role: user.role,
               token: jwt.sign(
                 { userId: user._id },
                 `${process.env.DB_TOKEN}`,
@@ -50,25 +52,4 @@ exports.login = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
       })
       .catch(error => res.status(500).json({ error }));
-};
-
-// pour récupérer les données utilisateur
-exports.profile = (req, res, next) => {
-	const token = req.headers.authorization;
-	const decodedToken = jwt.verify(token, `${process.env.DB_TOKEN}`);
-	const userId = decodedToken.userId;
-
-	User.findOne({ _id: userId })
-		.then(function (user) {
-			if (user) {
-        res.status(201).json(user);
-        console.log("userInfos");
-        console.log(this.userInfos);
-			} else {
-				res.status(404).json({ error: "Utilisateur non trouvé." });
-        console.log("userInfos");
-        console.log(this.userInfos);
-			}
-		})
-		.catch(function (err) {res.status(500).json({ error: console.log(err) });	});
 };

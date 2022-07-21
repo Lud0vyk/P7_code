@@ -93,6 +93,7 @@ export default {
         let newDate =  Date.now();
 
         formData.append("userId", this.user.userId);
+        formData.append("userName", this.user.name);
         formData.append("title", this.post.title);
         formData.append("description", this.post.description);
         formData.append("image", this.post.image);
