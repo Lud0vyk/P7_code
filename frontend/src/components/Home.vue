@@ -11,7 +11,7 @@
 
       <div v-if="user.role =='admin'" class="card"><!-- changer la condition -->
         <h3>admin</h3>
-        <div v-for="(publication, id) in publicationSortedByDate(publicationsList)" :key="id">
+        <div v-for="(publication, id) in publicationsList" :key="id">
         <nav>
           <!-- <div :to=publicationId(publication.id)> -->
             <img :src="publication.imageUrl" :alt="publication.description"/>
@@ -22,7 +22,7 @@
       </div>
       <div v-else-if="user.role =='user'" class="card">
          <h3>user</h3>
-        <div v-for="(publication, id) in publicationSortedByDate(publicationsList)" :key="id">
+        <div v-for="(publication, id) in publicationsList" :key="id">
           <div v-if="publication.validation">
             <nav>
               <!-- <div :to=publicationId(publication.id)> -->
@@ -55,6 +55,19 @@
   <hr>
     <button @click="consoleLog()" class="button"> console.log </button>
     <button @click="affichage()" class="button"> publications </button>
+  <hr>
+      
+        <h3>test</h3>
+        <div v-for="(publication, id) in publicationsList" :key="id">
+  
+          <!-- <div :to=publicationId(publication.id)> -->
+            <img :src="publication.imageUrl" :alt="publication.description"/>
+            <h3>{{ publication.title }}</h3>
+            <!-- require() -->
+          <!-- </div> -->
+      
+        </div>
+      
   <router-view />
 </template>
 
@@ -66,7 +79,7 @@ export default {
   name: 'HomePage',
   data() {
     return {
-      loading: false,
+      componentLoaded: false,
       publicationsList: [this.$store.dispatch("getAllPublications")],
       post: {
           title: '',
@@ -76,6 +89,8 @@ export default {
           imageData: ''
       },
       messageError: '',
+      //publications: '',
+      //list: [],
     }
   },
   methods: {
@@ -93,24 +108,32 @@ export default {
     publicationId(id) {
 			this.$router.push("/publication/" + id);
 		},
-    publicationSortedByDate(publicationsList) {
+    /*listpublicationSortedByDate(publicationsList) {
 
       return publicationsList.sort((a,b) => b.date - a.date);
-    },
+    },*/
+    /*publicationSortedByDate() {
+      const list = list();
+      return list.sort((a,b) => b.date - a.date);
+    },*/
     consoleLog() {
         //console.log();
         console.log("session");
         console.log(this.user);
+        console.log("publications");
+        console.log(this.publications);
+        console.log("publicationsList");
+        console.log(this.publicationsList);
     },
     affichage() {
-      this.publicationsList = [this.$store.dispatch("getAllPublications")];
-      console.log("publicationsList");
-        console.log(this.publicationsList);
-      return this.publicationsList;
+      const listaffichage = this.$store.state.list;
+      console.log("setPublications");
+      console.log(listaffichage);
+      return listaffichage;
     }
   },
 	mounted() {
-		this.loading = true;
+		this.componentLoaded = true;
 		//this.id = this.$route.params.id;
 
 		if (this.$store.state.user.userId == -1) {
@@ -118,14 +141,35 @@ export default {
 			return;
 		}
 		//this.$store.dispatch("publicationId", { id: this.$route.params.id });
-    //this.$store.dispatch("getUserInfos");
 	},
   computed: {
     ...mapState({
-			publication: "publicationInfos",
-     // userInfos: "userInfos",
+			publicationInfos: "publicationInfos",
+      //list: "publications",
 			user:"user",
-		})
+      publications: "publications",
+      publication: "publication",
+		}),
+    list() {
+      return this.$store.state.list;
+    },
+    message() {
+			if (!this.componentLoaded) {
+				return null;
+			} else {
+				return this.$store.state.publications;
+			}
+		},
+    // sert a rien
+    /*message() {
+			if (!this.componentLoaded) {
+				return null;
+			} else {
+        console.log("setPublications");
+        console.log(this.$store.state.setPublications);
+				return this.$store.state.setPublications;
+			}
+		},*/
   }
 }
 

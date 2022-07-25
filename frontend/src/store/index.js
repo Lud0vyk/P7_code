@@ -40,14 +40,16 @@ export default createStore({
     },
     publicationInfos: {
       id: "",
-      userName: "",
       userId: "",
+      userName: "",
       title: "",
       description: "",
       date: "",
       validation: "",
       image: ""
-    }
+    },
+    list: '',
+    //publicationsList: []
   },
   mutations: {
     
@@ -55,8 +57,14 @@ export default createStore({
       state.status = status;
     },
     setPublications: function (state, publications) {
-			state.publicationsList = publications;//.slice().reverse();
+			state.publications = publications;//.slice().reverse();
 		},
+    setPublication: function (state, publication) {
+			state.publication = publication;
+    },
+    publicationInfos: function (state, publicationInfos) {
+      state.publicationInfos = publicationInfos;
+    },
     logUser: function (state, user) {
       instance.defaults.headers.common['Authorization'] = user.token;
       sessionStorage.setItem('user', JSON.stringify(user));
@@ -74,9 +82,6 @@ export default createStore({
         token: ''
       }
       sessionStorage.removeItem('user');
-    },
-    publicationInfos: function (state, publicationInfos) {
-      state.publicationInfos = publicationInfos;
     },
   },
   actions: {
@@ -111,17 +116,6 @@ export default createStore({
         });
      });
     },
-    /* plus nécéssaire XXXXX
-    // récuprération des infos de l'utilisateur
-    getUserInfos: ({commit}) => {
-      instance.post('auth/profile')
-      .then(function (response) {
-        commit('userInfos', response.data);
-      })
-      .catch(function (error) {
-        return error;
-      });
-    },*/
     // création d'une publication
     publicationPost: ({ commit }, publicationInfos) => {
 			commit("publicationInfos", "created");
@@ -130,6 +124,9 @@ export default createStore({
 				instance.post("/publications", publicationInfos)
         .then(function (response) {
           commit("publicationInfos", response);
+          this.publicationInfos = response.data.publication;
+          console.log("publicationPost");
+          console.log(response);
           resolve(response);
         })
         .catch(function (error) {
@@ -144,7 +141,12 @@ export default createStore({
 			instance.get("/publications")
       .then(function (response) {
         commit("setPublications", response.data.publication);
-        this.publicationsList = response.data.publication;
+        this.list = response.data.publication;
+        console.log("commit");
+        console.log(commit("setPublications", response.data.publication));
+        console.log("data");
+        console.log(this.list);
+        
       })
       .catch(function (error) {
         return error

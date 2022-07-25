@@ -58,6 +58,8 @@
         </form>
 
     </div>
+    <hr>
+    <button @click="consoleLog()" class="button"> console.log </button>
 
 </template>
 
@@ -93,7 +95,7 @@ export default {
         let newDate =  Date.now();
 
         formData.append("userId", this.user.userId);
-        formData.append("userName", this.user.name);
+        formData.append("userName", this.user.userName);
         formData.append("title", this.post.title);
         formData.append("description", this.post.description);
         formData.append("image", this.post.image);
@@ -113,6 +115,11 @@ export default {
             window.location.reload();
         }
 	},
+        consoleLog() {
+        //console.log();
+        console.log("session");
+        console.log(this.user.userName);
+    },
     // prévisualisation de l'image
     inputPreview(e) {
         this.post.image = this.$refs.image.files[0] || e.dataTransfer.files;
@@ -134,7 +141,7 @@ export default {
                 return true;
             }
         },
-        ...mapState(['status', 'userInfos'])
+        ...mapState(['status', 'userInfos', 'publicationInfos'])
   }
 }
 

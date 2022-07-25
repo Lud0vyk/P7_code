@@ -17,7 +17,7 @@ const like = require('../controllers/like');
 
 
 // route /api/stuff pour aller chercher les objets en base de données
-router.get('/', auth, publicationCtrl.getAllPublications);
+router.get('/', publicationCtrl.getAllPublications);
 // route POST pour envoyer des objets et fonction middleware
 router.post('/', auth, multer, publicationCtrl.createPublication);
 // route pour afficher un seul objet grâce à l'id dans la requête du frontend

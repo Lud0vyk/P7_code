@@ -1,5 +1,4 @@
 <template>
-
     <div class="card">
         <h1> Login </h1>
         <div class="form-row">
@@ -22,13 +21,14 @@
         </div>
     </div>
 
-    <button 
-        class="button"
-        @click="logout()" 
-        :class="{ 'button--disable' : userConnected }">
-        Logout
-    </button>
-
+    <div v-if="userConnected">
+    <!-- :class="{ 'button--disable' : userConnected }"-->
+        <button 
+            class="button"
+            @click="logout()">
+            Logout
+        </button>
+    </div>
 </template>
 
 <script>
@@ -41,6 +41,7 @@ export default {
     data() {
         return {
             mode: 'login',
+            //logged: '',
             email: '',
             password: '',
             //user: this.$store.state.user,
@@ -56,7 +57,7 @@ export default {
             }
         },
         userConnected() {
-            if(this.email == "" || this.password == "") {
+            if( !(sessionStorage.user) || sessionStorage.user == null) {
                 return false;
             } else {
                 return true;
@@ -80,9 +81,9 @@ export default {
             });
         },
         logout() {
-        this.$store.commit('logout');
-        this.$router.push('/login');
-        }
+            this.$store.commit('logout');
+            window.location.reload();
+        },
     }
 }
 </script>

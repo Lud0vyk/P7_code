@@ -9,15 +9,8 @@ export default {
     computed: {
         functionLogo () {
             return require("@/assets/icon-left-font.png");
-            /* return this.$store.commit('functionLogoC');
-            ne fonctionne pas pourquoi ? */
         }
     }
-    /* la version :
-    action: {
-        functionLogo () {
-            return this.$store.dispatch('functionLogoA');
-    }}*/
 }
 </script>
 

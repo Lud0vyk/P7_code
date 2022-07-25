@@ -73,9 +73,15 @@ exports.deletePublication = (req, res, next) => {
 // pour afficher toutes les publications
 exports.getAllPublications = (req, res, next) => {
   Publication.find()
+
+  /*{
+		include: models.User,
+		attributes: ["UserId", "userName", "title", "id", "createdAt"],
+		where: { status: 1 },
+	}*/
     
     /* .limit(5) ça pourrait être utile plus tard */
-    .then((publications) => {res.status(200).json({ publications });})
+    .then((publications) => {res.status(200).json(publications);})
     .catch((error) => {res.status(400).json({error: "no publication"});});
 }
 
